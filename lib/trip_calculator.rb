@@ -37,7 +37,5 @@ class TripCalculator
   end
 end
 
-# Will take an origin and destination
-
 # Need to figure out how get the 'cheapest' and 'shortest' flights for each group!
 # [cheapest, shortest][cheapest, shortest]

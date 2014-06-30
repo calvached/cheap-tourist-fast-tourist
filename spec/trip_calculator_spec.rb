@@ -17,12 +17,31 @@ describe TripCalculator do
   end
 
   it 'adds a flight duration to all flights' do
-    calc.add_flight_durations
+    calc.flight_durations
     first_set_of_flights = calc.all_flights.first
     second_set_of_flights = calc.all_flights[1]
 
     expect(first_set_of_flights.first.duration).to eq(1.0)
     expect(second_set_of_flights[2].duration).to eq(1.5)
+  end
+
+  it 'sorts all flights by price (low to high)' do
+    calc.sort_flights_by_price
+    first_set_of_flights = calc.all_flights.first
+    second_set_of_flights = calc.all_flights[1]
+
+    expect(first_set_of_flights.first.price).to eq(100.0)
+    expect(second_set_of_flights[2].price).to eq(75.0)
+  end
+
+  it 'sorts all flights by duration (low to high)' do
+    calc.flight_durations
+    calc.sort_flights_by_duration
+    first_set_of_flights = calc.all_flights.first
+    second_set_of_flights = calc.all_flights[1]
+
+    expect(first_set_of_flights.first.duration).to eq(1.0)
+    expect(second_set_of_flights[2].duration).to eq(1.0)
   end
 end
 
@@ -41,6 +60,10 @@ end
 # Trip Calculator
 #   Gets all parsed flight data
 #   Calculates the duration of each flight (departure - arrival)
+#   sort flights by price (each group is sorted individually)
+#   get cheapest flight('A', 'Z')
+#   sort flights by duration
+#   get fastest duration
 
 # Travel Agency
 #   sorts through trips

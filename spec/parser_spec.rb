@@ -2,8 +2,8 @@ require 'parser'
 
 describe Parser do
   it 'returns sets of data' do
-    file = 'data/sample-input.txt'
-    parsed_data = Parser.new.parse(file)
+    flights_file = 'data/sample-input.txt'
+    parsed_data = Parser.new.parse(flights_file)
     first_set_of_flights = parsed_data.first
     second_set_of_flights = parsed_data[1]
 

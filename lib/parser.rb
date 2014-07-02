@@ -1,14 +1,14 @@
 require_relative 'itinerary'
 
 class Parser
-  def parse(file)
+  def parse(flights_file)
     number_for_groups = []
     matched_data = []
 
-    File.foreach(file) do |itinerary|
+    File.foreach(flights_file) do |itinerary|
       if !itinerary.scan(/^\d+/).empty?
         number_for_groups << itinerary
-      elsif itinerary =~ data_pattern
+      elsif itinerary =~ flight_itinerary_pattern
         from = extract_data(itinerary)[0]
         to = extract_data(itinerary)[1]
         departure = extract_data(itinerary)[2]
@@ -33,7 +33,7 @@ class Parser
     end
   end
 
-  def data_pattern
+  def flight_itinerary_pattern
     /\w{1}\s\w{1}\s\d+:\d+\s\d+:\d+\s\d+\.\d+/
   end
 end

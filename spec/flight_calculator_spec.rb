@@ -17,31 +17,44 @@ describe FlightCalculator do
   end
 
   it 'adds a flight duration to all flights' do
-    calc.set_durations
-    first_set_of_flights = calc.groups.first
-    second_set_of_flights = calc.groups[1]
+    calc.groups = [
+      [
+        {:from=>"A", :to=>"B", :departure=>"09:00", :arrival=>"10:00", :price=>100.0}
+      ]]
 
-    expect(first_set_of_flights.first[:duration]).to eq(1.0)
-    expect(second_set_of_flights[2][:duration]).to eq(1.5)
+    calc.set_durations
+    set_of_flights = calc.groups.first
+
+    expect(set_of_flights.first[:duration]).to eq(1.0)
   end
 
   it 'sorts all flights by price (low to high)' do
-    calc.sort_by_price
-    first_set_of_flights = calc.groups.first
-    second_set_of_flights = calc.groups[1]
+    calc.groups = [
+      [
+        {:from=>"A", :to=>"B", :departure=>"09:00", :arrival=>"10:00", :price=>200.0},
+        {:from=>"B", :to=>"Z", :departure=>"11:30", :arrival=>"13:30", :price=>100.0},
+        {:from=>"A", :to=>"Z", :departure=>"10:00", :arrival=>"12:00", :price=>300.0}
+      ]]
 
-    expect(first_set_of_flights.first[:price]).to eq(100.0)
-    expect(second_set_of_flights[2][:price]).to eq(75.0)
+    calc.sort_by_price
+    set_of_flights = calc.groups.first
+
+    expect(set_of_flights.first[:price]).to eq(100.0)
   end
 
   it 'sorts all flights by duration (low to high)' do
-    calc.set_durations
-    calc.sort_by_duration
-    first_set_of_flights = calc.groups.first
-    second_set_of_flights = calc.groups[1]
+    calc.groups = [
+      [
+        {:from=>"A", :to=>"B", :departure=>"08:00", :arrival=>"09:00", :price=>50.0, :duration=>1.0},
+        {:from=>"A", :to=>"B", :departure=>"12:00", :arrival=>"13:00", :price=>300.0, :duration=>1.0},
+        {:from=>"A", :to=>"C", :departure=>"14:00", :arrival=>"15:30", :price=>175.0, :duration=>1.5},
+        {:from=>"B", :to=>"C", :departure=>"10:00", :arrival=>"11:00", :price=>75.0, :duration=>1.0}
+      ]]
 
-    expect(first_set_of_flights.first[:duration]).to eq(1.0)
-    expect(second_set_of_flights[2][:duration]).to eq(1.0)
+    calc.sort_by_duration
+    set_of_flights = calc.groups.first
+
+    expect(set_of_flights[3][:duration]).to eq(1.5)
   end
 
 end

@@ -6,35 +6,35 @@ describe TravelAgency do
   it 'finds direct flights' do
     direct_flights = agency.get_direct_flights('A', 'Z')
 
-    expect(direct_flights.first.duration).to eq(2.0)
+    expect(direct_flights.first[:duration]).to eq(2.0)
   end
 
   xit 'finds indirect flights' do
     indirect_flights = agency.get_indirect_flights('A', 'Z')
 
-    expect(indirect_flights[0].duration).to eq(1.0)
-    expect(indirect_flights[1].duration).to eq(2.0)
+    expect(indirect_flights[0][:duration]).to eq(1.0)
+    expect(indirect_flights[1][:duration]).to eq(2.0)
   end
 
   xit 'finds the cheapest flight' do
     cheapest_flights = agency.get_cheapest_price('A', 'Z')
 
-    expect(cheapest_flights[0].price).to eq(100.0)
-    expect(cheapest_flights[1].price).to eq(100.0)
-    expect(cheapest_flights[2].price).to eq(50.0)
-    expect(cheapest_flights[3].price).to eq(75.0)
-    expect(cheapest_flights[4].price).to eq(100.0)
+    expect(cheapest_flights[0][:price]).to eq(100.0)
+    expect(cheapest_flights[1][:price]).to eq(100.0)
+    expect(cheapest_flights[2][:price]).to eq(50.0)
+    expect(cheapest_flights[3][:price]).to eq(75.0)
+    expect(cheapest_flights[4][:price]).to eq(100.0)
   end
 
   xit 'finds the flight with the shortest duration' do
     shortest_duration = agency.get_shortest_duration('A', 'Z')
 
-    expect(shortest_duration[0].duration).to eq(2.0)
-    expect(shortest_duration[0].price).to eq(300.0)
-    expect(shortest_duration[1].duration).to eq(1.0)
-    expect(shortest_duration[1].price).to eq(300.0)
-    expect(shortest_duration[2].duration).to eq(1.5)
-    expect(shortest_duration[2].price).to eq(250.0)
+    expect(shortest_duration[0][:duration]).to eq(2.0)
+    expect(shortest_duration[0][:price]).to eq(300.0)
+    expect(shortest_duration[1][:duration]).to eq(1.0)
+    expect(shortest_duration[1][:price]).to eq(300.0)
+    expect(shortest_duration[2][:duration]).to eq(1.5)
+    expect(shortest_duration[2][:price]).to eq(250.0)
   end
 
   xit 'returns specific flights' do

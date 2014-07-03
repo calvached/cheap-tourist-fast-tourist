@@ -9,7 +9,41 @@ describe TravelAgency do
     expect(direct_flights.first[:duration]).to eq(2.0)
   end
 
+  it 'selects all flights that begin at the origin point' do
+    flight_group = [
+        {:from=>"A", :to=>"B", :departure=>"08:00", :arrival=>"09:00", :price=>50.0, :duration=>1.0},
+        {:from=>"A", :to=>"B", :departure=>"12:00", :arrival=>"13:00", :price=>300.0, :duration=>1.0},
+        {:from=>"A", :to=>"C", :departure=>"14:00", :arrival=>"15:30", :price=>175.0, :duration=>1.5},
+        {:from=>"B", :to=>"C", :departure=>"10:00", :arrival=>"11:00", :price=>75.0, :duration=>1.0},
+        {:from=>"B", :to=>"Z", :departure=>"15:00", :arrival=>"16:30", :price=>250.0, :duration=>1.5},
+        {:from=>"C", :to=>"B", :departure=>"15:45", :arrival=>"16:45", :price=>50.0, :duration=>1.0},
+        {:from=>"C", :to=>"Z", :departure=>"16:00", :arrival=>"19:00", :price=>100.0, :duration=>3.0}
+      ]
+
+    expect(agency.flights_departing_from('A', flight_group)).to eq(
+      [
+        {:from=>"A", :to=>"B", :departure=>"08:00", :arrival=>"09:00", :price=>50.0, :duration=>1.0},
+        {:from=>"A", :to=>"B", :departure=>"12:00", :arrival=>"13:00", :price=>300.0, :duration=>1.0},
+        {:from=>"A", :to=>"C", :departure=>"14:00", :arrival=>"15:30", :price=>175.0, :duration=>1.5}
+      ])
+  end
+
   xit 'finds indirect flights' do
+    agency.calc.groups = [
+      [
+        {:from=>"A", :to=>"B", :departure=>"09:00", :arrival=>"10:00", :price=>100.0, :duration=>1.0},
+        {:from=>"B", :to=>"Z", :departure=>"11:30", :arrival=>"13:30", :price=>100.0, :duration=>2.0}
+      ],
+      [
+        {:from=>"A", :to=>"B", :departure=>"08:00", :arrival=>"09:00", :price=>50.0, :duration=>1.0},
+        {:from=>"A", :to=>"B", :departure=>"12:00", :arrival=>"13:00", :price=>300.0, :duration=>1.0},
+        {:from=>"A", :to=>"C", :departure=>"14:00", :arrival=>"15:30", :price=>175.0, :duration=>1.5},
+        {:from=>"B", :to=>"C", :departure=>"10:00", :arrival=>"11:00", :price=>75.0, :duration=>1.0},
+        {:from=>"B", :to=>"Z", :departure=>"15:00", :arrival=>"16:30", :price=>250.0, :duration=>1.5},
+        {:from=>"C", :to=>"B", :departure=>"15:45", :arrival=>"16:45", :price=>50.0, :duration=>1.0},
+        {:from=>"C", :to=>"Z", :departure=>"16:00", :arrival=>"19:00", :price=>100.0, :duration=>3.0}
+      ]]
+
     indirect_flights = agency.get_indirect_flights('A', 'Z')
 
     expect(indirect_flights[0][:duration]).to eq(1.0)

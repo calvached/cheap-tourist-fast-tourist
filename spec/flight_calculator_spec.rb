@@ -66,7 +66,6 @@ end
 
 # A < B < C < Z
 
-# Based on the tourist, sort through the data by the cheapest amount or shortest travel time.
 #   IF flights are sorted by cheapest amount then find the first flight that matches the origin point. Determine the destination point of the flight, if it is not 'Z' then look for the next flight that is == to the destination point, but the new destination point must be greater than the last destination point (or else we go backwards).
 
 #   IF flights are sorted by the shortest time then find all the flights that have an origin of 'A', then find the flight that travels the furthest in the shortest amount of time.

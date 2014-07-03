@@ -1,35 +1,35 @@
-require_relative 'itinerary'
-
 class Parser
   def parse(flights_file)
-    number_for_groups = []
-    matched_data = []
+    quantity_in_groups = []
+    itineraries = []
 
-    File.foreach(flights_file) do |itinerary|
-      if !itinerary.scan(/^\d+/).empty?
-        number_for_groups << itinerary
-      elsif itinerary =~ flight_itinerary_pattern
-        from = extract_data(itinerary)[0]
-        to = extract_data(itinerary)[1]
-        departure = extract_data(itinerary)[2]
-        arrival  = extract_data(itinerary)[3]
-        price = extract_data(itinerary)[4].to_f
-
-        matched_data << Itinerary.new(from, to, departure, arrival, price)
+    File.foreach(flights_file) do |line|
+      if group_quantity_in?(line)
+        quantity_in_groups << line
+      elsif line =~ flight_itinerary_pattern
+        itineraries << { from: format(line)[0],
+                         to: format(line)[1],
+                         departure: format(line)[2],
+                         arrival: format(line)[3],
+                         price: format(line)[4].to_f }
       end
     end
 
-    seperate_into_groups(matched_data, number_for_groups[1..-1])
+    seperate_into_groups(itineraries, quantity_in_groups[1..-1])
   end
 
   private
-  def extract_data(itinerary)
-    itinerary.strip.split(' ')
+  def group_quantity_in?(line)
+    !line.scan(/^\d+/).empty?
   end
 
-  def seperate_into_groups(matched_data, number_for_groups)
-    number_for_groups.reduce([]) do |grouped_data, number|
-      grouped_data << matched_data.shift(number.to_i)
+  def format(line)
+    line.strip.split(' ')
+  end
+
+  def seperate_into_groups(itineraries, quantity_in_groups)
+    quantity_in_groups.reduce([]) do |group, number|
+      group << itineraries.shift(number.to_i)
     end
   end
 

@@ -3,33 +3,23 @@ require 'time'
 class FlightCalculator
   attr_accessor :groups
 
-  def initialize(flights_file)
-    @groups = Parser.new.parse(flights_file)
-    set_durations
+  def get_cheapest(flights)
+    flights.min_by { |flight| flight[:price] }
   end
 
-  def sort_by_price
-    @groups.each_with_index do |group, i|
-      @groups[i] = group.sort_by { |flight| flight[:price] }
-    end
-  end
-
-  def sort_by_duration
-    @groups.each_with_index do |group, i|
-      @groups[i] = group.sort_by { |flight| flight[:duration] }
-    end
+  def get_shortest_duration(flights)
+    flights_with_durations = set_durations(flights)
+    flights_with_durations.min_by { |flight| flight[:duration] }
   end
 
   def total(prices)
     (prices.reduce(:+) * 100).round / 100.0
   end
 
-  def set_durations
-    @groups.each do |group|
-      group.each do |flight|
-        flight[:duration] = convert_duration_to_hours(flight[:departure], flight[:arrival])
-      end
-    end
+  def set_durations(flights)
+    flights.each do |flight|
+      flight[:duration] = convert_duration_to_hours(flight[:departure], flight[:arrival])
+     end
   end
 
   def convert_duration_to_hours(departure, arrival)

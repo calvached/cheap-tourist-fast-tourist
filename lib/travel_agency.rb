@@ -34,7 +34,4 @@ class TravelAgency
     flight_group.select { |flight| flight[:from] == origin }
   end
 
-  def choose_cheapest_flight(selected_flights)
-    selected_flights.first
-  end
 end

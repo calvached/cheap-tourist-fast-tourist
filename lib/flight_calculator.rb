@@ -3,27 +3,27 @@ require 'time'
 class FlightCalculator
   attr_accessor :groups
 
-  def get_cheapest(flights)
+  def self.get_cheapest(flights)
     flights.min_by { |flight| flight[:price] }
   end
 
-  def get_shortest_duration(flights)
+  def self.get_shortest_duration(flights)
     flights_with_durations = set_durations(flights)
     flights_with_durations.min_by { |flight| flight[:duration] }
   end
 
-  def total(prices)
+  def self.total(prices)
     (prices.reduce(:+) * 100).round / 100.0
   end
 
   private
-  def set_durations(flights)
+  def self.set_durations(flights)
     flights.each do |flight|
       flight[:duration] = convert_duration_to_hours(flight[:departure], flight[:arrival])
      end
   end
 
-  def convert_duration_to_hours(departure, arrival)
+  def self.convert_duration_to_hours(departure, arrival)
     minute = 60
     hour = 60.0
 

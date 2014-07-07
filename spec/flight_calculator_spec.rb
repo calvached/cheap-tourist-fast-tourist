@@ -1,7 +1,7 @@
 require 'flight_calculator'
 
 describe FlightCalculator do
-  let(:calc) { FlightCalculator.new }
+  let(:calc) { FlightCalculator }
 
   it 'calculates the total price' do
     prices = [10.20, 12.20, 14.20]

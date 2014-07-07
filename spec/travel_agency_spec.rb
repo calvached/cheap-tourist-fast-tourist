@@ -34,16 +34,6 @@ describe TravelAgency do
       ])
   end
 
-  it 'chooses the cheapest flight' do
-    selected_flights = [
-        {:from=>"A", :to=>"B", :departure=>"08:00", :arrival=>"09:00", :price=>50.0, :duration=>1.0},
-        {:from=>"A", :to=>"C", :departure=>"14:00", :arrival=>"15:30", :price=>175.0, :duration=>1.5},
-        {:from=>"A", :to=>"B", :departure=>"12:00", :arrival=>"13:00", :price=>300.0, :duration=>1.0}
-      ]
-
-    expect(agency.choose_cheapest_flight(selected_flights)).to eq({:from=>"A", :to=>"B", :departure=>"08:00", :arrival=>"09:00", :price=>50.0, :duration=>1.0})
-  end
-
   xit 'selects a booking' do
     agency.calc.groups = [[
         {:from=>"A", :to=>"B", :departure=>"08:00", :arrival=>"09:00", :price=>50.0, :duration=>1.0},

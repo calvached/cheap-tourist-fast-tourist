@@ -10,7 +10,6 @@ class TravelAgency
 
   def select_booking(option)
     if option == 'cheap'
-
     elsif option == 'fast'
     else
       puts 'Invalid option'

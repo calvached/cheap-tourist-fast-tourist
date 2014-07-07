@@ -1,7 +1,7 @@
 require 'flight_calculator'
 
 describe FlightCalculator do
-  let(:calc) { FlightCalculator.new('data/sample-input.txt') }
+  let(:calc) { FlightCalculator.new }
 
   it 'calculates a duration' do
     departure = '12:00'
@@ -17,44 +17,34 @@ describe FlightCalculator do
   end
 
   it 'adds a flight duration to all flights' do
-    calc.groups = [
+    flights =
       [
         {:from=>"A", :to=>"B", :departure=>"09:00", :arrival=>"10:00", :price=>100.0}
-      ]]
+      ]
 
-    calc.set_durations
-    set_of_flights = calc.groups.first
 
-    expect(set_of_flights.first[:duration]).to eq(1.0)
+      expect(calc.set_durations(flights)).to eq([{:from=>"A", :to=>"B", :departure=>"09:00", :arrival=>"10:00", :price=>100.0, :duration => 1.0}])
   end
 
-  it 'sorts all flights by price (low to high)' do
-    calc.groups = [
-      [
-        {:from=>"A", :to=>"B", :departure=>"09:00", :arrival=>"10:00", :price=>200.0},
-        {:from=>"B", :to=>"Z", :departure=>"11:30", :arrival=>"13:30", :price=>100.0},
-        {:from=>"A", :to=>"Z", :departure=>"10:00", :arrival=>"12:00", :price=>300.0}
-      ]]
+  it 'returns the flight with the shortest duration' do
+    flights =[
+        {:from=>"A", :to=>"B", :departure=>"08:00", :arrival=>"10:00", :price=>50.0, :duration=>2.0},
+        {:from=>"A", :to=>"C", :departure=>"14:00", :arrival=>"15:30", :price=>175.0, :duration=>1.5},
+        {:from=>"B", :to=>"C", :departure=>"10:00", :arrival=>"11:00", :price=>75.0, :duration=>1.0}
+      ]
 
-    calc.sort_by_price
-    set_of_flights = calc.groups.first
-
-    expect(set_of_flights.first[:price]).to eq(100.0)
+    expect(calc.get_shortest_duration(flights)).to eq({:from=>"B", :to=>"C", :departure=>"10:00", :arrival=>"11:00", :price=>75.0, :duration=>1.0})
   end
 
-  it 'sorts all flights by duration (low to high)' do
-    calc.groups = [
-      [
+  it 'gets the cheapest flight' do
+    flights = [
         {:from=>"A", :to=>"B", :departure=>"08:00", :arrival=>"09:00", :price=>50.0, :duration=>1.0},
         {:from=>"A", :to=>"B", :departure=>"12:00", :arrival=>"13:00", :price=>300.0, :duration=>1.0},
         {:from=>"A", :to=>"C", :departure=>"14:00", :arrival=>"15:30", :price=>175.0, :duration=>1.5},
         {:from=>"B", :to=>"C", :departure=>"10:00", :arrival=>"11:00", :price=>75.0, :duration=>1.0}
-      ]]
+      ]
 
-    calc.sort_by_duration
-    set_of_flights = calc.groups.first
-
-    expect(set_of_flights[3][:duration]).to eq(1.5)
+      expect(calc.get_cheapest(flights)).to eq({:from=>"A", :to=>"B", :departure=>"08:00", :arrival=>"09:00", :price=>50.0, :duration=>1.0})
   end
 
 end

@@ -4,26 +4,32 @@ describe TravelAgency do
   let(:agency) { TravelAgency.new }
 
   it 'finds direct flights' do
+    agency.calc.groups = [[
+        {:from=>"A", :to=>"B", :departure=>"08:00", :arrival=>"09:00", :price=>50.0, :duration=>1.0},
+        {:from=>"A", :to=>"Z", :departure=>"12:00", :arrival=>"13:00", :price=>300.0, :duration=>1.0},
+        {:from=>"A", :to=>"Z", :departure=>"14:00", :arrival=>"16:00", :price=>300.0, :duration=>1.0},
+      ]]
+
     direct_flights = agency.get_direct_flights('A', 'Z')
 
-    expect(direct_flights.first[:duration]).to eq(2.0)
+    expect(direct_flights).to eq(
+      [
+        {:from=>"A", :to=>"Z", :departure=>"12:00", :arrival=>"13:00", :price=>300.0, :duration=>1.0},
+        {:from=>"A", :to=>"Z", :departure=>"14:00", :arrival=>"16:00", :price=>300.0, :duration=>1.0}
+      ])
   end
 
-  it 'selects all flights that begin at the origin point' do
+  it 'selects all flights that begin at the specified origin point' do
     flight_group = [
         {:from=>"A", :to=>"B", :departure=>"08:00", :arrival=>"09:00", :price=>50.0, :duration=>1.0},
-        {:from=>"A", :to=>"B", :departure=>"12:00", :arrival=>"13:00", :price=>300.0, :duration=>1.0},
         {:from=>"A", :to=>"C", :departure=>"14:00", :arrival=>"15:30", :price=>175.0, :duration=>1.5},
-        {:from=>"B", :to=>"C", :departure=>"10:00", :arrival=>"11:00", :price=>75.0, :duration=>1.0},
         {:from=>"B", :to=>"Z", :departure=>"15:00", :arrival=>"16:30", :price=>250.0, :duration=>1.5},
-        {:from=>"C", :to=>"B", :departure=>"15:45", :arrival=>"16:45", :price=>50.0, :duration=>1.0},
         {:from=>"C", :to=>"Z", :departure=>"16:00", :arrival=>"19:00", :price=>100.0, :duration=>3.0}
       ]
 
     expect(agency.flights_departing_from('A', flight_group)).to eq(
       [
         {:from=>"A", :to=>"B", :departure=>"08:00", :arrival=>"09:00", :price=>50.0, :duration=>1.0},
-        {:from=>"A", :to=>"B", :departure=>"12:00", :arrival=>"13:00", :price=>300.0, :duration=>1.0},
         {:from=>"A", :to=>"C", :departure=>"14:00", :arrival=>"15:30", :price=>175.0, :duration=>1.5}
       ])
   end
@@ -36,6 +42,16 @@ describe TravelAgency do
       ]
 
     expect(agency.choose_cheapest_flight(selected_flights)).to eq({:from=>"A", :to=>"B", :departure=>"08:00", :arrival=>"09:00", :price=>50.0, :duration=>1.0})
+  end
+
+  xit 'selects a booking' do
+    agency.calc.groups = [[
+        {:from=>"A", :to=>"B", :departure=>"08:00", :arrival=>"09:00", :price=>50.0, :duration=>1.0},
+        {:from=>"A", :to=>"Z", :departure=>"12:00", :arrival=>"13:00", :price=>100.0, :duration=>1.0},
+        {:from=>"A", :to=>"Z", :departure=>"14:00", :arrival=>"16:00", :price=>300.0, :duration=>1.0},
+      ]]
+
+    expect(agency.select_booking('cheap')).to eq({:from=>"A", :to=>"Z", :departure=>"12:00", :arrival=>"13:00", :price=>100.0, :duration=>1.0})
   end
 
   xit 'finds indirect flights' do
@@ -60,32 +76,6 @@ describe TravelAgency do
     expect(indirect_flights[1][:duration]).to eq(2.0)
   end
 
-  xit 'finds the cheapest flight' do
-    cheapest_flights = agency.get_cheapest_price('A', 'Z')
-
-    expect(cheapest_flights[0][:price]).to eq(100.0)
-    expect(cheapest_flights[1][:price]).to eq(100.0)
-    expect(cheapest_flights[2][:price]).to eq(50.0)
-    expect(cheapest_flights[3][:price]).to eq(75.0)
-    expect(cheapest_flights[4][:price]).to eq(100.0)
-  end
-
-  xit 'finds the flight with the shortest duration' do
-    shortest_duration = agency.get_shortest_duration('A', 'Z')
-
-    expect(shortest_duration[0][:duration]).to eq(2.0)
-    expect(shortest_duration[0][:price]).to eq(300.0)
-    expect(shortest_duration[1][:duration]).to eq(1.0)
-    expect(shortest_duration[1][:price]).to eq(300.0)
-    expect(shortest_duration[2][:duration]).to eq(1.5)
-    expect(shortest_duration[2][:price]).to eq(250.0)
-  end
-
-  xit 'returns specific flights' do
-    expect(agency.get_flights_for('A', 'Z')).to be_kind_of(Array)
-    expect(agency.get_flights_for('A', 'Z')).to_not be_empty
-    expect(agency.get_flights_for('A', '4')).to be_empty
-  end
 end
 
 # A file will have a set number of test cases

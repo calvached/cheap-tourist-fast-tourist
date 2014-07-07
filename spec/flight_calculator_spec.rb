@@ -1,12 +1,11 @@
 require 'flight_calculator'
 
 describe FlightCalculator do
-  let(:calc) { FlightCalculator }
 
   it 'calculates the total price' do
     prices = [10.20, 12.20, 14.20]
 
-    expect(calc.total(prices)).to eq(36.60)
+    expect(FlightCalculator.total(prices)).to eq(36.60)
   end
 
   it 'returns the flight with the shortest duration' do
@@ -16,7 +15,7 @@ describe FlightCalculator do
         {:from=>"B", :to=>"C", :departure=>"10:00", :arrival=>"11:00", :price=>75.0, :duration=>1.0}
       ]
 
-    expect(calc.get_shortest_duration(flights)).to eq({:from=>"B", :to=>"C", :departure=>"10:00", :arrival=>"11:00", :price=>75.0, :duration=>1.0})
+    expect(FlightCalculator.get_shortest_duration(flights)).to eq({:from=>"B", :to=>"C", :departure=>"10:00", :arrival=>"11:00", :price=>75.0, :duration=>1.0})
   end
 
   it 'gets the cheapest flight' do
@@ -27,7 +26,7 @@ describe FlightCalculator do
         {:from=>"B", :to=>"C", :departure=>"10:00", :arrival=>"11:00", :price=>75.0, :duration=>1.0}
       ]
 
-      expect(calc.get_cheapest(flights)).to eq({:from=>"A", :to=>"B", :departure=>"08:00", :arrival=>"09:00", :price=>50.0, :duration=>1.0})
+      expect(FlightCalculator.get_cheapest(flights)).to eq({:from=>"A", :to=>"B", :departure=>"08:00", :arrival=>"09:00", :price=>50.0, :duration=>1.0})
   end
 
 end

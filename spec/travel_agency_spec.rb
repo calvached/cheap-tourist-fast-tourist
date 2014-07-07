@@ -4,7 +4,7 @@ describe TravelAgency do
   let(:agency) { TravelAgency.new }
 
   it 'finds direct flights' do
-    agency.calc.groups = [[
+    agency.flights = [[
         {:from=>"A", :to=>"B", :departure=>"08:00", :arrival=>"09:00", :price=>50.0, :duration=>1.0},
         {:from=>"A", :to=>"Z", :departure=>"12:00", :arrival=>"13:00", :price=>300.0, :duration=>1.0},
         {:from=>"A", :to=>"Z", :departure=>"14:00", :arrival=>"16:00", :price=>300.0, :duration=>1.0},
@@ -66,6 +66,34 @@ describe TravelAgency do
     expect(indirect_flights[1][:duration]).to eq(2.0)
   end
 
+  it 'returns built flights' do
+    flights = [
+        {:from=>"A", :to=>"B", :price=>100.0, :duration=>1.0},
+        {:from=>"B", :to=>"H", :price=>300.0, :duration=>2.0},
+        {:from=>"H", :to=>"Z", :price=>300.0, :duration=>2.0},
+        {:from=>"A", :to=>"C", :price=>200.0, :duration=>1.5},
+        {:from=>"C", :to=>"K", :price=>400.0, :duration=>2.5},
+        {:from=>"K", :to=>"Z", :price=>400.0, :duration=>2.5},
+      ]
+
+    expect(agency.indirect_flights(flights)).to eq([
+        {:from=>"A", :to=>"Z", :price=>700.0, :duration=>5.0},
+        {:from=>"A", :to=>"Z", :price=>1000.0, :duration=>6.5},
+      ])
+  end
+
+  it 'builts one flight' do
+    flights = [
+        {:from=>"A", :to=>"B", :price=>100.0, :duration=>1.0},
+        {:from=>"B", :to=>"D", :price=>100.0, :duration=>1.0},
+        {:from=>"B", :to=>"Z", :price=>100.0, :duration=>1.0},
+        {:from=>"D", :to=>"E", :price=>100.0, :duration=>1.0},
+        {:from=>"E", :to=>"Q", :price=>100.0, :duration=>1.0},
+        {:from=>"Q", :to=>"Z", :price=>100.0, :duration=>1.0},]
+
+    expect(agency.flight_builder(flights, 'A', [])).to eq([{:from=>"A", :to=>"Z", :price=>500.0, :duration=>5.0}, {:from=>"A", :to=>"Z", :price=>200.0, :duration=>2.0}])
+  end
+
 end
 
 # A file will have a set number of test cases
@@ -75,17 +103,10 @@ end
 
 # A < B < C < Z
 
-# Based on the tourist, sort through the data by the cheapest amount or shortest travel time.
 #   IF flights are sorted by cheapest amount then find the first flight that matches the origin point. Determine the destination point of the flight, if it is not 'Z' then look for the next flight that is == to the destination point, but the new destination point must be greater than the last destination point (or else we go backwards).
 
 #   IF flights are sorted by the shortest time then find all the flights that have an origin of 'A', then find the flight that travels the furthest in the shortest amount of time.
 
-# Trip Calculator
-#   Gets all parsed flight data
-#   Calculates the duration of each flight (departure - arrival)
+# get_cheapest will take a set of flights from A - Z and select the cheapest one from that group.
 
-# Travel Agency
-#   sorts through trips
-#     get_cheapest_price
-#     get_shortest_duration
-
+# get_shortest_duration will take a set of flights from A - Z and select the fastest one from that group.

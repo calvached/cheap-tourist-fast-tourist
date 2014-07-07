@@ -1,11 +1,10 @@
 require 'flight_calculator'
 
 class TravelAgency
-  attr_accessor :calc
+  attr_accessor :flights
 
   def initialize
     @flights = Parser.parse('data/sample-input.txt')
-    @calc = FlightCalculator.new
   end
 
   def select_booking(option)
@@ -17,20 +16,53 @@ class TravelAgency
   end
 
   def get_direct_flights(origin, destination)
-    @calc.groups.each do |flights|
-      direct_flights = flights.select { |flight| flight[:from] == origin && flight[:to] == destination }
+    @flights.each do |group|
+      direct_flights = group.select { |flight| flight[:from] == origin && flight[:to] == destination }
       direct_flights ? (return direct_flights) : nil
     end
   end
 
-  def get_indirect_flights(origin, destination)
-    @calc.groups.each do |flight_group|
-      flights_departing_from(origin, flight_group)
+  def indirect_flights(flights)
+    built_flights = []
+    a_flights = flights_departing_from('A', flights)
+
+    a_flights.each do |flight|
+      stop = flights_departing_from(flight[:to], flights)
+      stop_2 = flights_departing_from(stop.first[:to], flights)
+      sum = flight[:price] + stop.first[:price] + stop_2.first[:price]
+      total_duration = flight[:duration] + stop.first[:duration] + stop_2.first[:duration]
+
+      built_flights << {from: 'A', to: 'Z', price: sum, duration: total_duration}
     end
+
+    built_flights
   end
 
   def flights_departing_from(origin, flight_group)
     flight_group.select { |flight| flight[:from] == origin }
   end
 
+  def flight_builder(available_flights, origin, collected_flights)
+    if origin != 'Z'
+      collected_flights << flights_departing_from(origin, available_flights).first
+      flight_builder(available_flights, collected_flights.last[:to], collected_flights)
+    end
+
+    total_prices = 0
+    total_durations = 0
+
+    collected_flights.each do |flight|
+      total_prices += flight[:price]
+      total_durations += flight[:duration]
+    end
+
+    {from: 'A', to: 'Z', price: total_prices, duration: total_durations}
+
+  end
+
 end
+
+# Travel Agency
+# Make new flights sets and calculate the new price and duration.
+# Get all flights with 'A'
+  # for each flight find the "to" and search for the next flight with that origin

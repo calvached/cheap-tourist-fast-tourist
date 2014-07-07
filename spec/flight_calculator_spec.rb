@@ -3,27 +3,10 @@ require 'flight_calculator'
 describe FlightCalculator do
   let(:calc) { FlightCalculator.new }
 
-  it 'calculates a duration' do
-    departure = '12:00'
-    arrival = '14:00'
-
-    expect(calc.convert_duration_to_hours(departure, arrival)).to eq(2.0)
-  end
-
   it 'calculates the total price' do
     prices = [10.20, 12.20, 14.20]
 
     expect(calc.total(prices)).to eq(36.60)
-  end
-
-  it 'adds a flight duration to all flights' do
-    flights =
-      [
-        {:from=>"A", :to=>"B", :departure=>"09:00", :arrival=>"10:00", :price=>100.0}
-      ]
-
-
-      expect(calc.set_durations(flights)).to eq([{:from=>"A", :to=>"B", :departure=>"09:00", :arrival=>"10:00", :price=>100.0, :duration => 1.0}])
   end
 
   it 'returns the flight with the shortest duration' do

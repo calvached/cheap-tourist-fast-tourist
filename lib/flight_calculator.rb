@@ -16,6 +16,7 @@ class FlightCalculator
     (prices.reduce(:+) * 100).round / 100.0
   end
 
+  private
   def set_durations(flights)
     flights.each do |flight|
       flight[:duration] = convert_duration_to_hours(flight[:departure], flight[:arrival])

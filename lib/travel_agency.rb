@@ -4,7 +4,17 @@ class TravelAgency
   attr_accessor :calc
 
   def initialize
-    @calc = FlightCalculator.new('data/sample-input.txt')
+    @flights = Parser.parse('data/sample-input.txt')
+    @calc = FlightCalculator.new
+  end
+
+  def select_booking(option)
+    if option == 'cheap'
+
+    elsif option == 'fast'
+    else
+      puts 'Invalid option'
+    end
   end
 
   def get_direct_flights(origin, destination)

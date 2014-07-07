@@ -1,5 +1,5 @@
 class Parser
-  def parse(flights_file)
+  def self.parse(flights_file)
     quantity_in_groups = []
     itineraries = []
 
@@ -19,21 +19,21 @@ class Parser
   end
 
   private
-  def group_quantity_in?(line)
+  def self.group_quantity_in?(line)
     !line.scan(/^\d+/).empty?
   end
 
-  def format(line)
+  def self.format(line)
     line.strip.split(' ')
   end
 
-  def seperate_into_groups(itineraries, quantity_in_groups)
+  def self.seperate_into_groups(itineraries, quantity_in_groups)
     quantity_in_groups.reduce([]) do |group, number|
       group << itineraries.shift(number.to_i)
     end
   end
 
-  def flight_itinerary_pattern
+  def self.flight_itinerary_pattern
     /\w{1}\s\w{1}\s\d+:\d+\s\d+:\d+\s\d+\.\d+/
   end
 end

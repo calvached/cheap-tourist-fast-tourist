@@ -1,4 +1,5 @@
 require 'flight_calculator'
+require 'parser'
 
 class TravelAgency
   attr_accessor :flights
@@ -42,24 +43,40 @@ class TravelAgency
     flight_group.select { |flight| flight[:from] == origin }
   end
 
-  def flight_builder(available_flights, origin, collected_flights)
-    if origin != 'Z'
-      collected_flights << flights_departing_from(origin, available_flights).first
-      flight_builder(available_flights, collected_flights.last[:to], collected_flights)
-    end
+  def flight_builder(available_flights, origin, legs)
+    leg = []
 
-    total_prices = 0
-    total_durations = 0
+      selected_flights = flights_departing_from(origin, available_flights)
 
-    collected_flights.each do |flight|
-      total_prices += flight[:price]
-      total_durations += flight[:duration]
-    end
+      selected_flights.each do |flight|
+        leg = []
 
-    {from: 'A', to: 'Z', price: total_prices, duration: total_durations}
+        if flight[:to] != 'Z'
+          leg = flight_builder(available_flights, flight[:to], legs)
+          #require 'pry'
+          #binding.pry
+          leg << flight
+          #leg.each { |built_flight| built_flight << flight }
+        else
+          #require 'pry'
+          #binding.pry
+          leg << flight
+        end
 
+        legs << leg
+      end
+
+    p leg
+    #total_prices = 0
+    #total_durations = 0
+
+    #collected_flights.each do |flight|
+    #  total_prices += flight[:price]
+    #  total_durations += flight[:duration]
+    #end
+
+    #[{from: 'A', to: 'Z', price: total_prices, duration: total_durations}]
   end
-
 end
 
 # Travel Agency

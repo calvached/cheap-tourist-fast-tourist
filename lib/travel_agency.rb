@@ -43,31 +43,27 @@ class TravelAgency
     flight_group.select { |flight| flight[:from] == origin }
   end
 
-  def flight_builder(available_flights, origin, legs)
-    leg = []
+  def flight_builder(available_flights, origin)
+    legs = []
+    selected_flights = flights_departing_from(origin, available_flights)
 
-      selected_flights = flights_departing_from(origin, available_flights)
-
-      selected_flights.each do |flight|
-        leg = []
-
-        if flight[:to] != 'Z'
-          leg = flight_builder(available_flights, flight[:to], legs)
-          #require 'pry'
-          #binding.pry
-          leg << flight
-          #leg.each { |built_flight| built_flight << flight }
-        else
-          #require 'pry'
-          #binding.pry
+    selected_flights.each do |flight|
+      if flight[:to] != 'Z'
+        legs = flight_builder(available_flights, flight[:to])
+        legs.each do |leg|
           leg << flight
         end
-
-        legs << leg
+      else
+        legs << [flight]
       end
 
-    p leg
-    #total_prices = 0
+      legs
+    end
+
+    p legs
+  end
+
+#total_prices = 0
     #total_durations = 0
 
     #collected_flights.each do |flight|
@@ -76,7 +72,6 @@ class TravelAgency
     #end
 
     #[{from: 'A', to: 'Z', price: total_prices, duration: total_durations}]
-  end
 end
 
 # Travel Agency

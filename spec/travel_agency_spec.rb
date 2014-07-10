@@ -152,23 +152,23 @@ describe TravelAgency do
   end
 
   xit 'calculates a total duration for built flights' do
-      built_flights = [
-        {:from=>"Q", :to=>"Z", :price=>100.0, :duration=>1.0},
-        {:from=>"E", :to=>"Q", :price=>100.0, :duration=>1.0},
-        {:from=>"D", :to=>"E", :price=>100.0, :duration=>1.0},
-        {:from=>"B", :to=>"D", :price=>100.0, :duration=>1.0},
-        {:from=>"A", :to=>"B", :price=>100.0, :duration=>1.0}
-      ],
-      [
-        {:from=>"D", :to=>"Z", :price=>100.0, :duration=>1.0},
-        {:from=>"B", :to=>"D", :price=>100.0, :duration=>1.0},
-        {:from=>"A", :to=>"B", :price=>100.0, :duration=>1.0}
-      ],
-      [
-        {:from=>"B", :to=>"Z", :price=>100.0, :duration=>1.0},
-        {:from=>"A", :to=>"B", :price=>100.0, :duration=>1.0}
-      ],
-    ]
+    #built_flights = [
+    #    {:from=>"Q", :to=>"Z", :price=>100.0, :duration=>1.0},
+    #    {:from=>"E", :to=>"Q", :price=>100.0, :duration=>1.0},
+    #    {:from=>"D", :to=>"E", :price=>100.0, :duration=>1.0},
+    #    {:from=>"B", :to=>"D", :price=>100.0, :duration=>1.0},
+    #    {:from=>"A", :to=>"B", :price=>100.0, :duration=>1.0}
+    #  ],
+    #  [
+    #    {:from=>"D", :to=>"Z", :price=>100.0, :duration=>1.0},
+    #    {:from=>"B", :to=>"D", :price=>100.0, :duration=>1.0},
+    #    {:from=>"A", :to=>"B", :price=>100.0, :duration=>1.0}
+    #  ],
+    #  [
+    #    {:from=>"B", :to=>"Z", :price=>100.0, :duration=>1.0},
+    #    {:from=>"A", :to=>"B", :price=>100.0, :duration=>1.0}
+    #  ]
+    #]
   end
 
   xit 'calculates a total price for built flights' do

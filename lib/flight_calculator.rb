@@ -1,7 +1,6 @@
 require 'time'
 
 class FlightCalculator
-  attr_accessor :groups
 
   def self.get_cheapest(flights)
     flights.min_by { |flight| flight[:price] }

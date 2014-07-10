@@ -65,18 +65,4 @@ class TravelAgency
     flight_group.select { |flight| flight[:from] == origin }
   end
 
-#total_prices = 0
-    #total_durations = 0
-
-    #collected_flights.each do |flight|
-    #  total_prices += flight[:price]
-    #  total_durations += flight[:duration]
-    #end
-
-    #[{from: 'A', to: 'Z', price: total_prices, duration: total_durations}]
 end
-
-# Travel Agency
-# Make new flights sets and calculate the new price and duration.
-# Get all flights with 'A'
-  # for each flight find the "to" and search for the next flight with that origin

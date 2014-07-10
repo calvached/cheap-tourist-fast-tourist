@@ -8,11 +8,19 @@ class TravelAgency
     @flights = Parser.parse('data/sample-input.txt')
   end
 
-  def select_booking(option)
-    if option == 'cheap'
-    elsif option == 'fast'
-    else
-      puts 'Invalid option'
+  def select_itinerary(option)
+    @flights.each do |group|
+      built_flights = flight_builder(group, 'A')
+      available_trips = FlightCalculator.create_trips(built_flights)
+
+      if option == 'cheap'
+        FlightCalculator.get_cheapest(available_trips)
+      elsif option == 'fast'
+        FlightCalculator.get_shortest_duration(available_trips)
+      else
+        puts 'Invalid option'
+      end
+
     end
   end
 
@@ -21,24 +29,6 @@ class TravelAgency
       direct_flights = group.select { |flight| flight[:from] == origin && flight[:to] == destination }
       direct_flights ? (return direct_flights) : nil
     end
-  end
-
-  def calculate_trip(built_itineraries)
-    built_itineraries.reduce([]) do |trips, itinerary|
-      prices = []
-      durations = []
-
-      itinerary.each do |flight|
-        prices << flight[:price]
-        durations << flight[:duration]
-      end
-
-      trips << {from: 'A', to: 'Z', price: total(prices), duration: total(durations)}
-    end
-  end
-
-  def total(addends)
-    addends.reduce(:+)
   end
 
   def flight_builder(available_flights, origin)

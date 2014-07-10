@@ -23,24 +23,22 @@ class TravelAgency
     end
   end
 
-  def indirect_flights(flights)
-    built_flights = []
-    a_flights = flights_departing_from('A', flights)
+  def calculate_trip(built_itineraries)
+    built_itineraries.reduce([]) do |trips, itinerary|
+      prices = []
+      durations = []
 
-    a_flights.each do |flight|
-      stop = flights_departing_from(flight[:to], flights)
-      stop_2 = flights_departing_from(stop.first[:to], flights)
-      sum = flight[:price] + stop.first[:price] + stop_2.first[:price]
-      total_duration = flight[:duration] + stop.first[:duration] + stop_2.first[:duration]
+      itinerary.each do |flight|
+        prices << flight[:price]
+        durations << flight[:duration]
+      end
 
-      built_flights << {from: 'A', to: 'Z', price: sum, duration: total_duration}
+      trips << {from: 'A', to: 'Z', price: total(prices), duration: total(durations)}
     end
-
-    built_flights
   end
 
-  def flights_departing_from(origin, flight_group)
-    flight_group.select { |flight| flight[:from] == origin }
+  def total(addends)
+    addends.reduce(:+)
   end
 
   def flight_builder(available_flights, origin)
@@ -61,6 +59,10 @@ class TravelAgency
     end
 
     legs
+  end
+
+  def flights_departing_from(origin, flight_group)
+    flight_group.select { |flight| flight[:from] == origin }
   end
 
 #total_prices = 0

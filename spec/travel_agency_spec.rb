@@ -150,7 +150,6 @@ describe TravelAgency do
 
     expect(agency.total(prices)).to eq(700.00)
   end
-
 end
 
 # A file will have a set number of test cases

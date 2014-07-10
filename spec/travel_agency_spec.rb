@@ -82,32 +82,7 @@ describe TravelAgency do
       ])
   end
 
-  it 'builds two flights' do
-    flights = [
-        {:from=>"A", :to=>"B", :price=>100.0, :duration=>1.0},
-        {:from=>"B", :to=>"D", :price=>100.0, :duration=>1.0},
-        {:from=>"B", :to=>"Z", :price=>100.0, :duration=>1.0},
-        {:from=>"D", :to=>"E", :price=>100.0, :duration=>1.0},
-        {:from=>"E", :to=>"Q", :price=>100.0, :duration=>1.0},
-        {:from=>"Q", :to=>"Z", :price=>100.0, :duration=>1.0},
-    ]
-
-    expect(agency.flight_builder(flights, 'A')).to eq([
-      [
-        {:from=>"Q", :to=>"Z", :price=>100.0, :duration=>1.0},
-        {:from=>"E", :to=>"Q", :price=>100.0, :duration=>1.0},
-        {:from=>"D", :to=>"E", :price=>100.0, :duration=>1.0},
-        {:from=>"B", :to=>"D", :price=>100.0, :duration=>1.0},
-        {:from=>"A", :to=>"B", :price=>100.0, :duration=>1.0}
-      ],
-      [
-        {:from=>"B", :to=>"Z", :price=>100.0, :duration=>1.0},
-        {:from=>"A", :to=>"B", :price=>100.0, :duration=>1.0}
-      ]
-    ])
-  end
-
-  xit 'builds three flights' do
+  it 'builds three flights' do
     flights = [
         {:from=>"A", :to=>"B", :price=>100.0, :duration=>1.0},
         {:from=>"B", :to=>"D", :price=>100.0, :duration=>1.0},
@@ -127,18 +102,78 @@ describe TravelAgency do
         {:from=>"A", :to=>"B", :price=>100.0, :duration=>1.0}
       ],
       [
+        {:from=>"D", :to=>"Z", :price=>100.0, :duration=>1.0},
+        {:from=>"B", :to=>"D", :price=>100.0, :duration=>1.0},
+        {:from=>"A", :to=>"B", :price=>100.0, :duration=>1.0}
+      ],
+      [
         {:from=>"B", :to=>"Z", :price=>100.0, :duration=>1.0},
+        {:from=>"A", :to=>"B", :price=>100.0, :duration=>1.0}
+      ],
+    ])
+  end
+
+  xit 'builds four flights' do
+    flights = [
+        {:from=>"A", :to=>"B", :price=>100.0, :duration=>1.0},
+        {:from=>"B", :to=>"D", :price=>100.0, :duration=>1.0},
+        {:from=>"B", :to=>"E", :price=>100.0, :duration=>1.0},
+        {:from=>"B", :to=>"Z", :price=>100.0, :duration=>1.0},
+        {:from=>"D", :to=>"E", :price=>100.0, :duration=>1.0},
+        {:from=>"D", :to=>"Z", :price=>100.0, :duration=>1.0},
+        {:from=>"E", :to=>"Q", :price=>100.0, :duration=>1.0},
+        {:from=>"Q", :to=>"Z", :price=>100.0, :duration=>1.0},
+    ]
+
+    expect(agency.flight_builder(flights, 'A')).to eq([
+      [
+        {:from=>"Q", :to=>"Z", :price=>100.0, :duration=>1.0},
+        {:from=>"E", :to=>"Q", :price=>100.0, :duration=>1.0},
+        {:from=>"D", :to=>"E", :price=>100.0, :duration=>1.0},
+        {:from=>"B", :to=>"D", :price=>100.0, :duration=>1.0},
+        {:from=>"A", :to=>"B", :price=>100.0, :duration=>1.0}
+      ],
+      [
+        {:from=>"Q", :to=>"Z", :price=>100.0, :duration=>1.0},
+        {:from=>"E", :to=>"Q", :price=>100.0, :duration=>1.0},
+        {:from=>"B", :to=>"E", :price=>100.0, :duration=>1.0},
         {:from=>"A", :to=>"B", :price=>100.0, :duration=>1.0}
       ],
       [
         {:from=>"D", :to=>"Z", :price=>100.0, :duration=>1.0},
         {:from=>"B", :to=>"D", :price=>100.0, :duration=>1.0},
         {:from=>"A", :to=>"B", :price=>100.0, :duration=>1.0}
-      ]
+      ],
+      [
+        {:from=>"B", :to=>"Z", :price=>100.0, :duration=>1.0},
+        {:from=>"A", :to=>"B", :price=>100.0, :duration=>1.0}
+      ],
     ])
-    # This needs to test that flights are grouped correctly
-    # [[QZ .. BD][BZ]]
   end
+
+  xit 'calculates a total duration for built flights' do
+      built_flights = [
+        {:from=>"Q", :to=>"Z", :price=>100.0, :duration=>1.0},
+        {:from=>"E", :to=>"Q", :price=>100.0, :duration=>1.0},
+        {:from=>"D", :to=>"E", :price=>100.0, :duration=>1.0},
+        {:from=>"B", :to=>"D", :price=>100.0, :duration=>1.0},
+        {:from=>"A", :to=>"B", :price=>100.0, :duration=>1.0}
+      ],
+      [
+        {:from=>"D", :to=>"Z", :price=>100.0, :duration=>1.0},
+        {:from=>"B", :to=>"D", :price=>100.0, :duration=>1.0},
+        {:from=>"A", :to=>"B", :price=>100.0, :duration=>1.0}
+      ],
+      [
+        {:from=>"B", :to=>"Z", :price=>100.0, :duration=>1.0},
+        {:from=>"A", :to=>"B", :price=>100.0, :duration=>1.0}
+      ],
+    ]
+  end
+
+  xit 'calculates a total price for built flights' do
+  end
+
 end
 
 # A file will have a set number of test cases

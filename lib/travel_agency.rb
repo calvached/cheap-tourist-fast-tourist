@@ -60,7 +60,7 @@ class TravelAgency
       legs
     end
 
-    p legs
+    legs
   end
 
 #total_prices = 0

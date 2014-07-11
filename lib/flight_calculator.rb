@@ -14,13 +14,19 @@ class FlightCalculator
     itineraries_with_durations = set_durations(itinerary)
       prices = []
       durations = []
+      departures = []
+      arrivals = []
 
       itineraries_with_durations.each do |flight|
         prices << flight[:price]
         durations << flight[:duration]
+        departures << flight[:departure]
+        arrivals << flight[:arrival]
       end
 
-      trips << {from: 'A', to: 'Z', price: total(prices), duration: total(durations)}
+p arrivals.min
+p departures.min
+      trips << {from: 'A', to: 'Z', price: total(prices), duration: total(durations), departure: departures.min, arrival: arrivals.max}
     end
   end
 

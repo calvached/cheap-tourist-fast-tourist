@@ -10,7 +10,7 @@ class TravelAgency
 
   def select_itinerary(option)
     @flights.each do |group|
-      built_flights = flight_builder(group, 'A')
+      built_flights = flight_builder(group)
       available_trips = FlightCalculator.create_trips(built_flights)
 
       if option == 'cheap'
@@ -24,35 +24,49 @@ class TravelAgency
     end
   end
 
-  def get_direct_flights(origin, destination)
-    @flights.each do |group|
-      direct_flights = group.select { |flight| flight[:from] == origin && flight[:to] == destination }
-      direct_flights ? (return direct_flights) : nil
-    end
-  end
-
-  def flight_builder(available_flights, origin)
+  def flight_builder(available_flights, origin = 'A', arrival_time = nil)
     legs = []
-    selected_flights = flights_departing_from(origin, available_flights)
+    selected_flights = select_available_flights(origin, available_flights, arrival_time)
 
     selected_flights.each do |flight|
+
       if flight[:to] != 'Z'
-        legs = flight_builder(available_flights, flight[:to])
-        legs.each do |leg|
-          leg << flight
+        indirect_flights = flight_builder(available_flights, flight[:to], flight[:arrival])
+        indirect_flights.each do |indirect_flight|
+          indirect_flight << flight
+          legs << indirect_flight
         end
       else
         legs << [flight]
       end
 
-      legs
     end
 
     legs
   end
 
-  def flights_departing_from(origin, flight_group)
-    flight_group.select { |flight| flight[:from] == origin }
+  def select_available_flights(origin, available_flights, arrival_time)
+    departing_flights = flights_departing_from(origin, available_flights)
+    advancing_flights = filter_for_advancing_flights(departing_flights)
+    filter_for_timely_flights(advancing_flights, arrival_time)
+  end
+
+  def flights_departing_from(origin, available_flights)
+    available_flights.select { |flight| flight[:from] == origin }
+  end
+
+  def filter_for_advancing_flights(available_flights)
+    available_flights.select { |flight| flight[:from] < flight[:to] }
+  end
+
+  def filter_for_timely_flights(available_flights, arrival_time)
+    if arrival_time
+      available_flights.select { |flight| flight[:departure] > arrival_time }
+    else
+      available_flights
+    end
   end
 
 end
+
+# return start and end time

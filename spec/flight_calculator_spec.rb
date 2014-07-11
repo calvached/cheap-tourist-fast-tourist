@@ -27,25 +27,25 @@ describe FlightCalculator do
     built_itineraries = [
       [
         {:from=>"Q", :to=>"Z", :departure=>"08:00", :arrival=>"09:00", :price=>100.0},
-        {:from=>"D", :to=>"Q", :departure=>"08:00", :arrival=>"09:00", :price=>100.0},
-        {:from=>"B", :to=>"D", :departure=>"08:00", :arrival=>"09:00", :price=>100.0},
-        {:from=>"A", :to=>"B", :departure=>"08:00", :arrival=>"09:00", :price=>100.0}
+        {:from=>"D", :to=>"Q", :departure=>"10:00", :arrival=>"11:00", :price=>100.0},
+        {:from=>"B", :to=>"D", :departure=>"12:00", :arrival=>"13:00", :price=>100.0},
+        {:from=>"A", :to=>"B", :departure=>"14:00", :arrival=>"15:00", :price=>100.0}
       ],
       [
         {:from=>"D", :to=>"Z", :departure=>"08:00", :arrival=>"09:00", :price=>100.0},
-        {:from=>"B", :to=>"D", :departure=>"08:00", :arrival=>"09:00", :price=>100.0},
-        {:from=>"A", :to=>"B", :departure=>"08:00", :arrival=>"09:00", :price=>100.0}
+        {:from=>"B", :to=>"D", :departure=>"10:00", :arrival=>"11:00", :price=>100.0},
+        {:from=>"A", :to=>"B", :departure=>"12:00", :arrival=>"13:00", :price=>100.0}
       ],
       [
         {:from=>"B", :to=>"Z", :departure=>"08:00", :arrival=>"09:00", :price=>100.0},
-        {:from=>"A", :to=>"B", :departure=>"08:00", :arrival=>"09:00", :price=>100.0}
+        {:from=>"A", :to=>"B", :departure=>"10:00", :arrival=>"11:00", :price=>100.0}
       ]
     ]
 
-    expect(FlightCalculator.create_trips(built_itineraries)).to eq([
-      {:from=>"A", :to=>"Z", :price=>400.0, :duration=>4.0},
-      {:from=>"A", :to=>"Z", :price=>300.0, :duration=>3.0},
-      {:from=>"A", :to=>"Z", :price=>200.0, :duration=>2.0},
+    expect(FlightCalculator.create_trips(built_itineraries)).to match_array([
+      {:from=>"A", :to=>"Z", :price=>400.0, :duration=>4.0, :departure=>"08:00", :arrival=>"15:00"},
+      {:from=>"A", :to=>"Z", :price=>300.0, :duration=>3.0, :departure=>"08:00", :arrival=>"13:00"},
+      {:from=>"A", :to=>"Z", :price=>200.0, :duration=>2.0, :departure=>"08:00", :arrival=>"11:00"},
     ])
   end
 

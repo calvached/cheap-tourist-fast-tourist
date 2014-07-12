@@ -28,6 +28,7 @@ class TravelAgency
     trip_results
   end
 
+  private
   def display(trip_results, option)
     puts "#{option.capitalize}est Flights"
 

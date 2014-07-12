@@ -28,11 +28,11 @@ class FlightCalculator
     end
   end
 
+  private
   def self.total(addends)
     addends.reduce(:+)
   end
 
-  private
   def self.set_durations(flights)
     flights.each do |flight|
       flight[:duration] = get_total_duration_in_hours(flight[:departure], flight[:arrival])

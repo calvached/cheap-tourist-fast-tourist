@@ -48,16 +48,4 @@ describe FlightCalculator do
       {:from=>"A", :to=>"Z", :price=>200.0, :duration=>3.0, :departure=>"08:00", :arrival=>"11:00"},
     ])
   end
-
-  it 'calculates a total duration for built flights' do
-    durations = [1.0, 1.5, 2.0, 3.0, 2.5]
-
-    expect(FlightCalculator.total(durations)).to eq(10.0)
-  end
-
-  it 'calculates a total price for built flights' do
-    prices = [100.0, 200.00, 150.00, 250.00]
-
-    expect(FlightCalculator.total(prices)).to eq(700.00)
-  end
 end

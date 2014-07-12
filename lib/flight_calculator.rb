@@ -24,9 +24,7 @@ class FlightCalculator
         arrivals << flight[:arrival]
       end
 
-p arrivals.min
-p departures.min
-      trips << {from: 'A', to: 'Z', price: total(prices), duration: total(durations), departure: departures.min, arrival: arrivals.max}
+       trips << {from: 'A', to: 'Z', departure: departures.min, arrival: arrivals.max, price: total(prices), duration: get_total_duration_in_hours(departures.min, arrivals.max)}
     end
   end
 
@@ -37,11 +35,11 @@ p departures.min
   private
   def self.set_durations(flights)
     flights.each do |flight|
-      flight[:duration] = convert_duration_to_hours(flight[:departure], flight[:arrival])
+      flight[:duration] = get_total_duration_in_hours(flight[:departure], flight[:arrival])
      end
   end
 
-  def self.convert_duration_to_hours(departure, arrival)
+  def self.get_total_duration_in_hours(departure, arrival)
     minute = 60
     hour = 60.0
 

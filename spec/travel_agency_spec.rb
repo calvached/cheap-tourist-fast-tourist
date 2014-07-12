@@ -18,7 +18,7 @@ describe TravelAgency do
       ])
   end
 
-  xit 'selects an itinerary' do
+  it 'selects an itinerary' do
     agency.flights = [[
         {:from=>"A", :to=>"B", :price=>100.0, :departure=>"12:00", :arrival=>"13:00"},
         {:from=>"B", :to=>"D", :price=>100.0, :departure=>"14:00", :arrival=>"15:00"},
@@ -30,7 +30,7 @@ describe TravelAgency do
         {:from=>"Q", :to=>"Z", :price=>100.0, :departure=>"19:00", :arrival=>"20:00"},
     ]]
 
-    expect(agency.select_itinerary('cheap')).to eq({:from=>"A", :to=>"Z", :departure=>"12:00", :arrival=>"16:00", :price=>200.0, :duration=>4.0})
+    expect(agency.select_itinerary('cheap')).to eq([{:from=>"A", :to=>"Z", :departure=>"12:00", :arrival=>"16:00", :price=>200.0, :duration=>4.0}])
   end
 
   it 'builds three flights' do

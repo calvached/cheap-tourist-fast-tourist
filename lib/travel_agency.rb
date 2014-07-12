@@ -4,23 +4,35 @@ require 'parser'
 class TravelAgency
   attr_accessor :flights
 
-  def initialize
-    @flights = Parser.parse('data/sample-input.txt')
+  def initialize(flight_file = 'data/sample-input.txt')
+    @flights = Parser.parse(flight_file)
   end
 
   def select_itinerary(option)
+    trip_results = []
+
     @flights.each do |group|
       built_flights = flight_builder(group)
       available_trips = FlightCalculator.create_trips(built_flights)
 
       if option == 'cheap'
-        FlightCalculator.get_cheapest(available_trips)
+        trip_results << FlightCalculator.get_cheapest(available_trips)
       elsif option == 'fast'
-        FlightCalculator.get_shortest_duration(available_trips)
+        trip_results << FlightCalculator.get_shortest_duration(available_trips)
       else
-        puts 'Invalid option'
+        return puts 'Invalid option'
       end
+    end
 
+    display(trip_results, option)
+    trip_results
+  end
+
+  def display(trip_results, option)
+    puts "#{option.capitalize}est Flights"
+
+    trip_results.each do |trip|
+      puts "#{trip[:departure]} #{trip[:arrival]} #{trip[:price]}"
     end
   end
 
@@ -68,5 +80,3 @@ class TravelAgency
   end
 
 end
-
-# return start and end time

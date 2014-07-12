@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+$LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
+
+require 'travel_agency'
+
+agency = TravelAgency.new('../data/input.txt')
+agency.select_itinerary(ARGV[0])

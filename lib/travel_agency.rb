@@ -1,15 +1,18 @@
-require 'flight_calculator'
 require 'parser'
+require 'flight_calculator'
 
 class TravelAgency
   attr_accessor :flights
 
-  def initialize(flight_file = 'data/sample-input.txt')
+  def initialize(flight_file = 'data/sample-input.txt', inputoutput)
     @flights = Parser.parse(flight_file)
+    @input_output = inputoutput
   end
 
-  def select_itinerary(option)
+  def select_itinerary(option = nil)
     trip_results = []
+
+    option = @input_output.in if option.nil?
 
     @flights.each do |group|
       built_flights = flight_builder(group)
@@ -25,16 +28,18 @@ class TravelAgency
     end
 
     display(trip_results, option)
-    trip_results
   end
 
   private
   def display(trip_results, option)
-    puts "#{option.capitalize}est Flights"
+    messages = []
+    messages << "#{option.capitalize}est Flights"
 
     trip_results.each do |trip|
-      puts "#{trip[:departure]} #{trip[:arrival]} #{trip[:price]}"
+      messages << "#{trip[:departure]} #{trip[:arrival]} #{trip[:price]}"
     end
+
+    @input_output.out(messages)
   end
 
   def flight_builder(available_flights, origin = 'A', arrival_time = nil)

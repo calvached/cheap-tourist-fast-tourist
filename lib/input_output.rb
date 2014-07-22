@@ -1,5 +1,4 @@
 class IO
-
   def self.in
     print "Please input an option. Choose 'cheap' or 'fast': "
     gets.chomp

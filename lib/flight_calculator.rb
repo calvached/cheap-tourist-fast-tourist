@@ -2,11 +2,13 @@ require 'time'
 
 class FlightCalculator
   def self.get_cheapest(flights)
-    flights.min_by { |flight| flight[:price] }
+    flights.sort_by! { |flight| flight[:price] }
+    flights.first
   end
 
   def self.get_shortest_duration(flights)
-    flights.min_by { |flight| flight[:duration] }
+    flights.sort_by! { |flight| flight[:duration] }
+    flights.first
   end
 
   def self.create_trips(built_itineraries)

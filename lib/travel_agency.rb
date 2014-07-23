@@ -2,17 +2,17 @@ require 'parser'
 require 'flight_calculator'
 
 class TravelAgency
-  attr_accessor :flights
+  attr_accessor :flights, :io
 
   def initialize(flight_file = 'data/sample-input.txt', inputoutput)
     @flights = Parser.parse(flight_file)
-    @input_output = inputoutput
+    @io = inputoutput
   end
 
-  def select_itinerary(option = nil)
+  def select_itinerary
     trip_results = []
 
-    option = @input_output.in if option.nil?
+    option = @io.in.chomp
 
     @flights.each do |group|
       built_flights = flight_builder(group)
@@ -23,7 +23,7 @@ class TravelAgency
       elsif option == 'fast'
         trip_results << FlightCalculator.get_shortest_duration(available_trips)
       else
-        return puts 'Invalid option'
+        return @io.out('Invalid option')
       end
     end
 
@@ -33,13 +33,13 @@ class TravelAgency
   private
   def display(trip_results, option)
     messages = []
-    messages << "#{option.capitalize}est Flights"
+    messages << @io.out("#{option.capitalize}est Flights")
 
     trip_results.each do |trip|
-      messages << "#{trip[:departure]} #{trip[:arrival]} #{trip[:price]}"
+      messages << @io.out("#{trip[:departure]} #{trip[:arrival]} #{trip[:price]}")
     end
 
-    @input_output.out(messages)
+    messages
   end
 
   def flight_builder(available_flights, origin = 'A', arrival_time = nil)
@@ -47,7 +47,6 @@ class TravelAgency
     selected_flights = select_available_flights(origin, available_flights, arrival_time)
 
     selected_flights.each do |flight|
-
       if flight[:to] != 'Z'
         indirect_flights = flight_builder(available_flights, flight[:to], flight[:arrival])
         indirect_flights.each do |indirect_flight|
@@ -57,7 +56,6 @@ class TravelAgency
       else
         legs << [flight]
       end
-
     end
 
     legs

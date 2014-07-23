@@ -5,7 +5,7 @@ describe IO do
   let(:test_output) { StringIO.new }
 
   context 'Input' do
-    it 'receives user input' do
+    xit 'receives user input' do
       test = IO.new(test_input, test_output)
 
       expect(test.input.string).to eq("test stuff\\n")
@@ -13,7 +13,7 @@ describe IO do
   end
 
   context 'Output' do
-    it 'displays messages to the console' do
+    xit 'displays messages to the console' do
       test = IO.new(test_input, test_output)
       test.out(['test string'])
 
@@ -23,9 +23,14 @@ describe IO do
 end
 
 describe MockIO do
-  it 'returns messages' do
-    messages = ['hello', 'world']
+  let(:mock) { MockIO.new }
 
-    expect(MockIO.out(messages)).to include('hello')
+  xit 'takes user input' do
+  end
+
+  xit 'returns messages' do
+    message = 'hello'
+
+    expect(mock.out(messages)).to include('hello')
   end
 end

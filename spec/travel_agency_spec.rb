@@ -2,7 +2,7 @@ require 'travel_agency'
 require 'input_output'
 
 describe TravelAgency do
-  let(:agency) { TravelAgency.new(MockIO) }
+  let(:agency) { TravelAgency.new(MockIO.new) }
 
   it 'selects the cheapest itinerary' do
     agency.flights = [[
@@ -16,7 +16,9 @@ describe TravelAgency do
         {:from=>"Q", :to=>"Z", :price=>100.0, :departure=>"19:00", :arrival=>"20:00"},
     ]]
 
-    expect(agency.select_itinerary('cheap')).to eq(["Cheapest Flights", "12:00 17:00 2.0"])
+    mock = agency.io
+    mock.in = 'cheap'
+    expect(agency.select_itinerary).to eq(["Cheapest Flights", "12:00 17:00 2.0"])
   end
 
   it 'selects the fastest itinerary' do
@@ -31,6 +33,8 @@ describe TravelAgency do
         {:from=>"Q", :to=>"Z", :price=>100.0, :departure=>"19:00", :arrival=>"20:00"},
     ]]
 
-    expect(agency.select_itinerary('fast')).to eq(["Fastest Flights", "12:00 15:00 500.0"])
+    mock = agency.io
+    mock.in = 'fast'
+    expect(agency.select_itinerary).to eq(["Fastest Flights", "12:00 15:00 500.0"])
   end
 end

@@ -4,5 +4,5 @@ $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require 'travel_agency'
 require 'input_output'
 
-agency = TravelAgency.new('../data/input.txt', IO)
+agency = TravelAgency.new('../data/input.txt', MyIO.new)
 agency.select_itinerary

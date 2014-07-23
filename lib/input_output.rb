@@ -1,23 +1,18 @@
-class IO
-  attr_reader :input, :output
-
-  def initialize(input = $stdin, output = $stdout)
-    @input = input
-    @output = output
-  end
-
+class MyIO
   def in
-    print "Please input an option. Choose 'cheap' or 'fast': "
-    @input.gets.chomp
+    out("Please input an option. Choose 'cheap' or 'fast': ")
+    gets
   end
 
-  def out(messages)
-    messages.each { |message| @output.puts message }
+  def out(message)
+    puts message
   end
 end
 
 class MockIO
-  def self.out(messages)
-    messages
+  attr_accessor :in
+
+  def out(message)
+    message
   end
 end

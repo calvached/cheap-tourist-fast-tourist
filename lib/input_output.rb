@@ -1,4 +1,4 @@
-class IO
+class MyIO
   def in
     out("Please input an option. Choose 'cheap' or 'fast': ")
     gets

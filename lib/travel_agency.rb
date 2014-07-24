@@ -32,14 +32,11 @@ class TravelAgency
 
   private
   def display(trip_results, option)
-    messages = []
-    messages << @io.out("#{option.capitalize}est Flights")
+    @io.out("#{option.capitalize}est Flights")
 
     trip_results.each do |trip|
-      messages << @io.out("#{trip[:departure]} #{trip[:arrival]} #{trip[:price]}")
+      @io.out("#{trip[:departure]} #{trip[:arrival]} #{trip[:price]}")
     end
-
-    messages
   end
 
   def flight_builder(available_flights, origin = 'A', arrival_time = nil)

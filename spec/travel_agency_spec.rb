@@ -18,7 +18,8 @@ describe TravelAgency do
 
     mock = agency.io
     mock.in = 'cheap'
-    expect(agency.select_itinerary).to eq(["Cheapest Flights", "12:00 17:00 2.0"])
+
+    expect(agency.select_itinerary).to eq([{:from=>"A", :to=>"Z", :departure=>"12:00", :arrival=>"17:00", :price=>2.0, :duration=>5.0}])
   end
 
   it 'selects the fastest itinerary' do
@@ -35,6 +36,7 @@ describe TravelAgency do
 
     mock = agency.io
     mock.in = 'fast'
-    expect(agency.select_itinerary).to eq(["Fastest Flights", "12:00 15:00 500.0"])
+
+    expect(agency.select_itinerary).to eq([{:from=>"A", :to=>"Z", :departure=>"12:00", :arrival=>"15:00", :price=>500.0, :duration=>3.0}])
   end
 end
